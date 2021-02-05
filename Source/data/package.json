@@ -4,5 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/dolittle-entropy/observability",
   "author": "Dolittle",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "moment": "2.29.1",
+    "rxjs": "6.6.3"
+  }
 }
