@@ -1,0 +1,18 @@
+{
+    "extends": "../../tsconfig.settings.json",
+    "compilerOptions": {
+        "rootDir": ".",
+        "baseUrl": ".",
+        "outDir": "./Build",
+        "paths": {
+            "@dolittle/observability*": [ "../../Source/*" ],
+            // "@dolittle/observability": [ "./Source/" ],
+            // "*": [ "./Source/*" ]
+        }
+    },
+    "include": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.scss",
+    ]
+}

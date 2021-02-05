@@ -1,0 +1,16 @@
+{
+    "private": true,
+    "workspaces": [
+        "Source/*",
+        "Samples/*"
+    ],
+    "scripts": {
+        "build": "tsc -b Source/"
+    },
+    "devDependencies": {
+        "typescript": "4.1.3",
+        "eslint": "7.16.0",
+        "eslint-plugin-react": "7.22.0",
+        "eslint-plugin-react-hooks": "4.2.0"
+    }
+}

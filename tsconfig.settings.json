@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "rootDir": ".",
+        "baseUrl": ".",
+        "outDir": "./Build",
+        "module": "CommonJS",
+        "target": "ES2019",
+        "jsx": "react",
+        "esModuleInterop": true,
+        "composite": true,
+        "skipLibCheck": true
+    }
+}
