@@ -54,21 +54,21 @@ module.exports = () => ({
     },
     devServer: {
         host: '0.0.0.0',
-        // proxy: {
-        //     '/api/prom/': {
-        //         target: 'http://localhost:8090',
-        //         headers:  { 'X-Scope-OrgId': 'system' },
-        //     },
-        //     '/loki/api/': {
-        //         target: 'http://localhost:8091',
-        //         headers:  { 'X-Scope-OrgId': 'system' },
-        //     },
-        //     '/loki/api/v1/tail': {
-        //         target: 'http://localhost:8092',
-        //         headers:  { 'X-Scope-OrgId': 'system' },
-        //         ws: true,
-        //     },
-        // }
+        proxy: {
+            '/api/prom/': {
+                target: 'http://localhost:8090',
+                headers:  { 'X-Scope-OrgId': 'system' },
+            },
+            '/loki/api/': {
+                target: 'http://localhost:8091',
+                headers:  { 'X-Scope-OrgId': 'system' },
+            },
+            '/loki/api/v1/tail': {
+                target: 'http://localhost:8092',
+                headers:  { 'X-Scope-OrgId': 'system' },
+                ws: true,
+            },
+        }
     },
     devtool: false,
 });

@@ -7,15 +7,18 @@
         "paths": {
             "@dolittle/observability.components/*": [ "../../Source/components/*" ],
             "@dolittle/observability.data/*": [ "../../Source/data/*" ],
+            "@dolittle/observability.sources/*": [ "../../Source/sources/*" ],
             "components/*": [ "../../Source/components/*" ],
             "data/*": [ "../../Source/data/*" ],
-            // "@dolittle/observability": [ "./Source/" ],
-            // "*": [ "../../Source/components/*", "../../Source/data/*" ]
+            "sources/*": [ "../../Source/sources/*" ],
         }
     },
     "include": [
         "**/*.ts",
         "**/*.tsx",
         "**/*.scss",
+    ],
+    "references": [
+        { "path": "../../Source" },
     ]
 }

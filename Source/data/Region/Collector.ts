@@ -15,7 +15,7 @@ type ResponseWithLoading<T, U extends TimeSeries<T>> = Response<T,U> & { readonl
 const loadingResponse = { loading: true, series: [], errors: [] };
 
 const pollingSourceWithLoading = <T, U extends TimeSeries<T>>(polling: PollingSource<T,U>): (domain: AbsoluteDomain) => Observable<ResponseWithLoading<T,U>> =>
-    (domain) => from(async () => ({ loading: false, ...await polling(domain) }));
+    (domain) => from((async () => ({ loading: false, ...await polling(domain) }))());
 
 const streamingSourceWithLoading = <T, U extends TimeSeries<T>>(streaming: StreamingSource<T,U>): (domain: AbsoluteDomain) => Observable<ResponseWithLoading<T,U>> =>
     (domain) => streaming(domain[0]).pipe(map((response) => ({ loading: false, ...response })));

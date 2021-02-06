@@ -1,0 +1,17 @@
+{
+    "extends": "../../tsconfig.settings.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "sources/*": [ "./*"]
+        }
+    },
+    "include": [
+        "**/*.ts",
+        "**/*.tsx"
+    ],
+    "references": [
+        { "path": "../components" },
+        { "path": "../data" }
+    ]
+}

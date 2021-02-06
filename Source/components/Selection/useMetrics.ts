@@ -4,4 +4,4 @@ import { SelectedMetrics } from './SelectedMetrics';
 import { useSelectedMetrics } from './useSelectedMetrics';
 
 export const useMetrics = (): SelectedMetrics =>
-    useObservable(useSelectedMetrics());
+    useObservable(useSelectedMetrics()) ?? { loading: true, series: [], errors: [] };

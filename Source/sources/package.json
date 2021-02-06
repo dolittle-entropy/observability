@@ -1,0 +1,19 @@
+{
+  "name": "@dolittle/observability.sources",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/dolittle-entropy/observability",
+  "author": "Dolittle",
+  "license": "MIT",
+  "dependencies": {
+    "@dolittle/observability.components": "1.0.0",
+    "@dolittle/observability.data": "1.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.14.0 <17.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "16.14.3",
+    "react": "16.14.0"
+  }
+}
