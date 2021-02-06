@@ -7,7 +7,8 @@
   "license": "MIT",
   "dependencies": {
     "@dolittle/observability.components": "1.0.0",
-    "@dolittle/observability.data": "1.0.0"
+    "@dolittle/observability.data": "1.0.0",
+    "rxjs": "6.6.3"
   },
   "peerDependencies": {
     "react": ">=16.14.0 <17.0.0"

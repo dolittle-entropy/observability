@@ -26,7 +26,7 @@ const convertMetricAndValuesToMetricSeries = (metric: Metric, data: [number, str
 };
 
 
-export const convertDataToTimeseries = (data: MatrixData | VectorData, nameOverride?: string): MetricSeries[] =>
+export const convertDataToMetricSeries = (data: MatrixData | VectorData, nameOverride?: string): MetricSeries[] =>
     data.resultType === 'matrix'
     ? data.result.map(({metric, values}) => convertMetricAndValuesToMetricSeries(metric, values, nameOverride))
     : data.result.map(({metric, value}) => convertMetricAndValuesToMetricSeries(metric, [value], nameOverride));

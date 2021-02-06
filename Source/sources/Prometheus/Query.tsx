@@ -3,11 +3,11 @@ import React from 'react';
 import { MetricSource } from '@dolittle/observability.components/Sources';
 
 import { useConfiguration } from 'sources/Prometheus/Configuration';
+import { isResponse } from 'sources/Prometheus/Types';
 import { fetchJSON } from 'sources/Utilities/fetchJSON';
 
 import { QueryProps } from './Query.props';
-import { isResponse } from './Types';
-import { convertDataToTimeseries } from './convertDataToMetricSeries';
+import { convertDataToMetricSeries } from './convertDataToMetricSeries';
 
 export const Query = (props: QueryProps): JSX.Element => {
     const configuration = useConfiguration(props);
@@ -24,7 +24,7 @@ export const Query = (props: QueryProps): JSX.Element => {
                 if (response.status === 'error') throw response.error;
                 if (response.data.resultType !== 'matrix' && response.data.resultType !== 'vector') throw 'Only Matrix and Vector data types supported';
 
-                return { series: convertDataToTimeseries(response.data, props.name), errors: [] };
+                return { series: convertDataToMetricSeries(response.data, props.name), errors: [] };
             } catch (error) {
                 return { series: [], errors: [error] }
             }
