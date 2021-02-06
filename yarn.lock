@@ -60,11 +60,27 @@
     "@uifabric/set-version" "^7.0.23"
     tslib "^1.10.0"
 
+"@fluentui/dom-utilities@^2.0.0-beta.1":
+  version "2.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@fluentui/dom-utilities/-/dom-utilities-2.0.0-beta.1.tgz#7d74bf892cb2a6bb6803a493f8c4da474fbad243"
+  integrity sha512-bmEBthwZGyBl5G8zQf5mpVlW2VUlWCcWFwFtg+uWa988wdYEE9KAKxEtX/6K3/1Pj4+mjzFFoMnDAe/+NHnmLg==
+  dependencies:
+    "@fluentui/set-version" "^8.0.0-beta.1"
+    tslib "^1.10.0"
+
 "@fluentui/keyboard-key@^0.2.12":
   version "0.2.13"
   resolved "https://registry.yarnpkg.com/@fluentui/keyboard-key/-/keyboard-key-0.2.13.tgz#e980b0192f6493a23a3534ff08e2b2db6c560611"
   integrity sha512-HLZNtkETFUuCP76Wk/oF54+tVp6aPGzsoJRsmnkh78gloC9CGp8JK+LQUYfj9dtzcHDHq64/dAA2e4j2tzjhaQ==
   dependencies:
+    tslib "^1.10.0"
+
+"@fluentui/merge-styles@^8.0.0-beta.4":
+  version "8.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@fluentui/merge-styles/-/merge-styles-8.0.0-beta.4.tgz#7f7dde09c91ada0a61b8a347cde3a93ec709fa2a"
+  integrity sha512-r3enZ/m8+ahXxTgFKjlSIgIXP2oxfh4CXys5cyu0w1DtPCQ169lxlRuntHLgOOTP9DAUKyFiY/F95bq3Zr1Z7w==
+  dependencies:
+    "@fluentui/set-version" "^8.0.0-beta.1"
     tslib "^1.10.0"
 
 "@fluentui/react-focus@^7.17.1":
@@ -79,12 +95,30 @@
     "@uifabric/utilities" "^7.33.2"
     tslib "^1.10.0"
 
+"@fluentui/react-hooks@^8.0.0-beta.10":
+  version "8.0.0-beta.10"
+  resolved "https://registry.yarnpkg.com/@fluentui/react-hooks/-/react-hooks-8.0.0-beta.10.tgz#a2f82df294f6eff3df96e546ba1bddf72fe2a7e9"
+  integrity sha512-vYN1hNKtk6JKC/uMRZI9JEVQr9pnSkromp+JG2CEhGyGQ++GdN/jeQ/PdI004z3r64dOuUbbQl8w/rGvoGqrdQ==
+  dependencies:
+    "@fluentui/react-window-provider" "^2.0.0-beta.5"
+    "@fluentui/set-version" "^8.0.0-beta.1"
+    "@fluentui/utilities" "^8.0.0-beta.10"
+    tslib "^1.10.0"
+
 "@fluentui/react-window-provider@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@fluentui/react-window-provider/-/react-window-provider-1.0.1.tgz#8ec71db8cfd57e11f00ed42c5c1377ef4dfe5f6b"
   integrity sha512-5hvruDyF0uE8+6YN6Y+d2sEzexBadxUNxUjDcDreTPsmtHPwF5FPBYLhoD7T84L5U4YNvKxKh25tYJm6E0GE2w==
   dependencies:
     "@uifabric/set-version" "^7.0.23"
+    tslib "^1.10.0"
+
+"@fluentui/react-window-provider@^2.0.0-beta.5":
+  version "2.0.0-beta.5"
+  resolved "https://registry.yarnpkg.com/@fluentui/react-window-provider/-/react-window-provider-2.0.0-beta.5.tgz#00423dfacce8aaefa4be613d79d02b799c2bb187"
+  integrity sha512-fkqIRLtVK0qlXqpWydAfpUp5tSeD2HEKWCoqAaE0CAGUiOilbyuQpZjU8hUPkX3JSWWNE6MvBicbMXnPgGzUGg==
+  dependencies:
+    "@fluentui/set-version" "^8.0.0-beta.1"
     tslib "^1.10.0"
 
 "@fluentui/react@7.155.3":
@@ -96,6 +130,13 @@
     office-ui-fabric-react "^7.155.3"
     tslib "^1.10.0"
 
+"@fluentui/set-version@^8.0.0-beta.1":
+  version "8.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@fluentui/set-version/-/set-version-8.0.0-beta.1.tgz#0c06a2ef14fe417a0bd2ed62f54ac958535a4a27"
+  integrity sha512-TVvaoyMn5eazWoYtB7EP2+1+ys9EYFosYoaUEMRdntEp0QRyIZ0wc9ZEj4k9aJ+Jg9C4tb05+rXhmnSBK4Iovg==
+  dependencies:
+    tslib "^1.10.0"
+
 "@fluentui/theme@^1.7.1":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@fluentui/theme/-/theme-1.7.1.tgz#24ee99d756ea71c722d3027388dbbe0df3fc8105"
@@ -104,6 +145,17 @@
     "@uifabric/merge-styles" "^7.19.1"
     "@uifabric/set-version" "^7.0.23"
     "@uifabric/utilities" "^7.33.2"
+    tslib "^1.10.0"
+
+"@fluentui/utilities@^8.0.0-beta.10":
+  version "8.0.0-beta.10"
+  resolved "https://registry.yarnpkg.com/@fluentui/utilities/-/utilities-8.0.0-beta.10.tgz#3a44815b28d76f8448bf908fbea7cdc07f04369b"
+  integrity sha512-Gio7oo6jsR/tNqUkjRLt6dfTqVEjxkdmS5ICuUhK5ZrrVGLdL4E0P5G0p45f2AHlg+YEt9hw41Oyh295+lB8rg==
+  dependencies:
+    "@fluentui/dom-utilities" "^2.0.0-beta.1"
+    "@fluentui/merge-styles" "^8.0.0-beta.4"
+    "@fluentui/set-version" "^8.0.0-beta.1"
+    prop-types "^15.7.2"
     tslib "^1.10.0"
 
 "@microsoft/load-themed-styles@^1.10.26":
@@ -4215,7 +4267,7 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-rxjs@^6.6.3:
+rxjs@6.6.3:
   version "6.6.3"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.3.tgz#8ca84635c4daa900c0d3967a6ee7ac60271ee552"
   integrity sha512-trsQc+xYYXZ3urjOiJOuCOa5N3jAZ3eiSpQB5hIT8zGlL2QfnHLJ2r7GMkBGuIausdJN1OneaI6gQlsqNHHmZQ==

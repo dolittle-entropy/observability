@@ -1,8 +1,8 @@
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { Source } from 'Sources';
-import { TimeSeries } from 'Types/TimeSeries';
+import { Source } from 'data/Sources';
+import { TimeSeries } from 'data/Types/TimeSeries';
 
 import { Collator } from './Collator';
 import { Collector } from './Collector';
@@ -14,6 +14,7 @@ export class Collection<T, U extends TimeSeries<T>> {
         this._domain = domain;
         this._collator = collator;
 
+        this._collectors = new BehaviorSubject([]);
         this.data = this._data = new BehaviorSubject([]);
         this.gatherDataFromCollectors();
     }

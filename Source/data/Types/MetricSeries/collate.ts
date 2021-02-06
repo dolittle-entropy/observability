@@ -1,4 +1,5 @@
-import { collate as collateTimeSeries } from 'Types/TimeSeries';
+import { collate as collateTimeSeries } from 'data/Types/TimeSeries';
+
 import { MetricSeries } from './MetricSeries';
 
 export const collate = (...series: MetricSeries[]): MetricSeries[] =>

@@ -2,9 +2,9 @@ import moment from 'moment';
 import { BehaviorSubject, concat, from, Observable, Subscription } from 'rxjs';
 import { exhaustMap, map, scan, switchMap } from 'rxjs/operators';
 
-import { hasStreamingCapabilitiles, PollingSource, Response, Source, StreamingSource } from 'Sources';
-import { AbsoluteDomain, RelativeDomain } from 'Types/Domain';
-import { TimeSeries } from 'Types/TimeSeries';
+import { hasStreamingCapabilitiles, PollingSource, Response, Source, StreamingSource } from 'data/Sources';
+import { AbsoluteDomain, RelativeDomain } from 'data/Types/Domain';
+import { TimeSeries } from 'data/Types/TimeSeries';
 
 import { Collator } from './Collator';
 import { Data } from './Data';

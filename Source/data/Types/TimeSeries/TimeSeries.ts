@@ -1,4 +1,4 @@
-import { Labels } from 'Types/Labels';
+import { Labels } from 'data/Types/Labels';
 
 import { DataSet } from './DataSet';
 import { Name } from './Name';

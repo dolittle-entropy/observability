@@ -1,6 +1,6 @@
 import { isDuration } from 'moment';
 
-import { hasOwnProperty } from 'Utilities/Typing';
+import { hasOwnProperty } from 'data/Utilities/Typing';
 
 import { RelativeDomain } from './RelativeDomain';
 

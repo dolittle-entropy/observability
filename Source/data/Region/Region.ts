@@ -1,6 +1,6 @@
-import { AbsoluteDomain, RelativeDomain } from 'Types/Domain';
-import { collate as collateLogs, LogSeries } from 'Types/LogSeries';
-import { collate as collateMetrics, MetricSeries } from 'Types/MetricSeries';
+import { AbsoluteDomain, RelativeDomain } from 'data/Types/Domain';
+import { collate as collateLogs, LogSeries } from 'data/Types/LogSeries';
+import { collate as collateMetrics, MetricSeries } from 'data/Types/MetricSeries';
 
 import { Collection } from './Collection';
 import { Domain } from './Domain';

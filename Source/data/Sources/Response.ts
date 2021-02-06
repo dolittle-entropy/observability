@@ -1,4 +1,4 @@
-import { TimeSeries } from 'Types/TimeSeries';
+import { TimeSeries } from 'data/Types/TimeSeries';
 
 import { Error } from './Error';
 

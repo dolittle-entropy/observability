@@ -4,6 +4,9 @@ import ReactDOM from 'react-dom';
 import './theme/theme';
 import './index.scss';
 
+import { Region } from '@dolittle/observability.components/Region';
+import { Controls } from '@dolittle/observability.components/Region/Controls';
+
 // import { Timeseries, printHello } from '@dolittle/observability.data/Timeseries/Timeseries';
 
 // const test: Timeseries = 1;
@@ -11,7 +14,10 @@ import './index.scss';
 
 const App = (): JSX.Element => {
     return (
-        <div>Hello world</div>
+        <Region>
+            <Controls/>
+            <div>Hello world</div>
+        </Region>
     );
 };
 

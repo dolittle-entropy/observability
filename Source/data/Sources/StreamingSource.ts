@@ -1,7 +1,7 @@
 import { Moment } from 'moment';
 import { Observable } from 'rxjs';
 
-import { TimeSeries } from 'Types/TimeSeries';
+import { TimeSeries } from 'data/Types/TimeSeries';
 
 import { Response } from './Response';
 

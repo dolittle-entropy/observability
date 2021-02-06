@@ -5,9 +5,12 @@
         "baseUrl": ".",
         "outDir": "./Build",
         "paths": {
-            "@dolittle/observability*": [ "../../Source/*" ],
+            "@dolittle/observability.components/*": [ "../../Source/components/*" ],
+            "@dolittle/observability.data/*": [ "../../Source/data/*" ],
+            "components/*": [ "../../Source/components/*" ],
+            "data/*": [ "../../Source/data/*" ],
             // "@dolittle/observability": [ "./Source/" ],
-            // "*": [ "./Source/*" ]
+            // "*": [ "../../Source/components/*", "../../Source/data/*" ]
         }
     },
     "include": [

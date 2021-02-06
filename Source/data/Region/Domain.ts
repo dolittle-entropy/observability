@@ -2,7 +2,7 @@ import moment, { Duration, duration, Moment } from 'moment';
 import { BehaviorSubject, Observable, combineLatest, timer, EMPTY } from 'rxjs';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
-import { AbsoluteDomain, isAbsoluteDomain, isRelativeDomain, RelativeDomain } from 'Types/Domain';
+import { AbsoluteDomain, isAbsoluteDomain, isRelativeDomain, RelativeDomain } from 'data/Types/Domain';
 
 const defaultRelativeDomain: RelativeDomain = { last: duration(1, 'hours'), refresh: duration(5, 'seconds') };
 

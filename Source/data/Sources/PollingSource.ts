@@ -1,5 +1,5 @@
-import { AbsoluteDomain } from 'Types/Domain';
-import { TimeSeries } from 'Types/TimeSeries';
+import { AbsoluteDomain } from 'data/Types/Domain';
+import { TimeSeries } from 'data/Types/TimeSeries';
 
 import { Response } from './Response';
 

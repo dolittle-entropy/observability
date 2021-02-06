@@ -1,0 +1,27 @@
+{
+  "name": "@dolittle/observability.components",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/dolittle-entropy/observability",
+  "author": "Dolittle",
+  "license": "MIT",
+  "dependencies": {
+    "@dolittle/observability.data": "1.0.0",
+    "moment": "2.29.1",
+    "rxjs": "6.6.3"
+  },
+  "peerDependencies": {
+    "@fluentui/react-hoooks": "8.0.0-beta.10",
+    "@fluentui/react": "7.155.3",
+    "react": ">=16.14.0 <17.0.0",
+    "react-dom": ">=16.14.0 <17.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "16.14.3",
+    "@types/react-dom": "16.9.10",
+    "@fluentui/react-hooks": "^8.0.0-beta.10",
+    "@fluentui/react": "7.155.3",
+    "react": "16.14.0",
+    "react-dom": "16.14.0"
+  }
+}

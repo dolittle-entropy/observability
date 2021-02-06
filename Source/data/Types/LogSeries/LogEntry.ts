@@ -1,4 +1,5 @@
-import { Timestamp } from 'Types/TimeSeries';
+import { Timestamp } from 'data/Types/TimeSeries';
+
 import { LogSeries } from './LogSeries';
 
 export type LogEntry = {

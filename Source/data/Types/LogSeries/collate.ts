@@ -1,4 +1,4 @@
-import { collate as collateTimeSeries } from 'Types/TimeSeries';
+import { collate as collateTimeSeries } from 'data/Types/TimeSeries';
 
 import { LogSeries } from './LogSeries';
 
