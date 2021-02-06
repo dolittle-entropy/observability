@@ -7,8 +7,6 @@ import { useDomain } from 'components/Region';
 
 import { DomainControls } from './DomainControls';
 
-import styles from  './Controls.module.scss';
-
 export const DateFormat = 'ddd MMM D YYYY HH:mm:ss';
 export const TimeFormat = 'HH:mm:ss';
 
@@ -36,7 +34,7 @@ export const Controls = (): JSX.Element => {
 
     return (
         <>
-            <div className={styles.container} ref={container}>
+            <div style={{ display: 'inline-block' }} ref={container}>
                 <DefaultButton
                     iconProps={{ iconName: 'Clock' }}
                     text={buttonText}
