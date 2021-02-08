@@ -8,9 +8,11 @@
             "@dolittle/observability.components/*": [ "../../Source/components/*" ],
             "@dolittle/observability.data/*": [ "../../Source/data/*" ],
             "@dolittle/observability.sources/*": [ "../../Source/sources/*" ],
+            "@dolittle/observability.visualization/*": [ "../../Source/visualization/*" ],
             "components/*": [ "../../Source/components/*" ],
             "data/*": [ "../../Source/data/*" ],
             "sources/*": [ "../../Source/sources/*" ],
+            "visualization/*": [ "../../Source/visualization/*" ],
         }
     },
     "include": [
