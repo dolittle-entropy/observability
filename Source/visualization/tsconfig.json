@@ -9,5 +9,9 @@
     "include": [
         "**/*.ts",
         "**/*.tsx"
+    ],
+    "references": [
+        { "path": "../components" },
+        { "path": "../data" },
     ]
 }
