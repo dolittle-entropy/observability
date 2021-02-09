@@ -4,4 +4,5 @@ export const merge = (child: Configuration, parent?: Configuration): Configurati
     ({
         serverUrl: child.serverUrl ?? parent?.serverUrl,
         websocketServerUrl: child.websocketServerUrl ?? parent?.websocketServerUrl,
+        limit: child.limit ?? parent?.limit,
     });

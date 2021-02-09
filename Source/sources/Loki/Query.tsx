@@ -21,8 +21,9 @@ export const Query = (props: QueryProps): JSX.Element => {
             async ([from, to]) => {
                 try {
                     if (typeof configuration.serverUrl !== 'string') throw 'ServerUrl is not configured';
+                    if (typeof configuration.limit !== 'number') throw 'Limit is not configured';
 
-                    const url = `${configuration.serverUrl}/query_range?query=${encodeURIComponent(props.query)}&start=${from.unix()}&end=${to.unix()}&direction=forward`;
+                    const url = `${configuration.serverUrl}/query_range?query=${encodeURIComponent(props.query)}&start=${from.unix()}&end=${to.unix()}&limit=${configuration.limit}&direction=forward`;
                     const response = await fetchJSON(url, isResponse);
 
                     if (response.status === 'error') throw response.error;
@@ -40,8 +41,12 @@ export const Query = (props: QueryProps): JSX.Element => {
                     logs.next({ series: [], errors: ['WebsocketServerUrl is not configured'] });
                     return logs;
                 }
+                if (typeof configuration.limit !== 'number') {
+                    logs.next({ series: [], errors: ['Limit is not configured'] });
+                    return logs;
+                }
 
-                const url = `${configuration.websocketServerUrl}/tail?query=${encodeURIComponent(props.query)}&start=${from.unix()}`;
+                const url = `${configuration.websocketServerUrl}/tail?query=${encodeURIComponent(props.query)}&start=${from.unix()}&limit=${configuration.limit}`;
                 websocketJSON(
                     url,
                     isStreamingResponse,

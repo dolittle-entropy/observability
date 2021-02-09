@@ -15,7 +15,7 @@ import { List } from '@dolittle/observability.visualization/Textual/Logs';
 const App = (): JSX.Element => {
     return (
         <PrometheusConfiguration serverUrl='http://localhost:8080/api/prom/api/v1' step={60}>
-            <LokiConfiguration serverUrl='http://localhost:8080/loki/api/v1' websocketServerUrl='ws://localhost:8080/loki/api/v1'>
+            <LokiConfiguration serverUrl='http://localhost:8080/loki/api/v1' websocketServerUrl='ws://localhost:8080/loki/api/v1' limit={2000}>
                 <Region>
                     <DataSet name='cpu'>
                         <PrometheusQuery query='100 - avg by (node) (irate(node_cpu_seconds_total{mode="idle"}[5m])*100)' name='load' />
