@@ -2,7 +2,8 @@ import moment, { isMoment, Moment } from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
-type Hover = { time: Moment, isHovering: boolean };
+import { Hover } from './Hover';
+import { Selected } from './Selected';
 
 const distinctHover = distinctUntilChanged<Hover>((current, next) => {
     if (!current?.isHovering && !next?.isHovering) return true;
@@ -10,8 +11,6 @@ const distinctHover = distinctUntilChanged<Hover>((current, next) => {
     if (current?.time?.valueOf() !== next?.time?.valueOf()) return false;
     return true;
 });
-
-type Selected = { from: Moment, to: Moment, hasSelected: boolean };
 
 const distinctSelected = distinctUntilChanged<Selected>((current, next) => {
     if (!current?.hasSelected && !next?.hasSelected) return true;

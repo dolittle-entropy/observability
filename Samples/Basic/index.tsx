@@ -31,7 +31,8 @@ const App = (): JSX.Element => {
 
                     <RegionControls/>
 
-                    <Figure width={1400} height={500}>
+                    {/* <Figure width={1400} height={500}> */}
+                    <Figure width={1400} height={200}>
                         <Select dataset='cpu'>
                             <Axes position={[0, 0, 1400, 200]}>
                                 <Horizontal>
@@ -42,17 +43,17 @@ const App = (): JSX.Element => {
                             </Axes>
                         </Select>
                         <Select dataset='network'>
-                            <Axes position={[0, 300, 1400, 200]}>
+                            {/* <Axes position={[0, 300, 1400, 200]}>
                                 <Horizontal groupBy='node'>
                                     <Plot range={[0, 2]} />
                                     <CurrentValue format={v => `${v.toFixed(2)}mb/s`} />
                                     <Legend />
                                 </Horizontal>
-                            </Axes>
+                            </Axes> */}
                         </Select>
                     </Figure>
 
-                    <List maxLines={20}/>
+                    <List maxLines={30} hoverContextLines={8}/>
                 </Region>
             </LokiConfiguration>
         </PrometheusConfiguration>
