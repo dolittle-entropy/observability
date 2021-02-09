@@ -5,24 +5,12 @@ import './theme/theme';
 import './index.scss';
 
 import { Region, RegionControls, DataSet, Select } from '@dolittle/observability.components';
-import { useLogs } from '@dolittle/observability.components/Selection';
 import { LokiConfiguration, LokiQuery, PrometheusConfiguration, PrometheusQuery } from '@dolittle/observability.sources';
 import { Figure, Axes } from '@dolittle/observability.visualization/Graphical';
 import { Horizontal } from '@dolittle/observability.visualization/Graphical/Metrics/Layout';
 import { Plot, CurrentValue, Legend } from '@dolittle/observability.visualization/Graphical/Metrics';
+import { List } from '@dolittle/observability.visualization/Textual/Logs';
 
-// import { Timeseries, printHello } from '@dolittle/observability.data/Timeseries/Timeseries';
-
-// const test: Timeseries = 1;
-// printHello();
-
-const Inner = (): JSX.Element => {
-    // const { series: metrics } = useMetrics();
-    // const { series: logs } = useLogs();
-    // console.log('Metrics', metrics);
-    // console.log('Logs', logs);
-    return null;
-}
 
 const App = (): JSX.Element => {
     return (
@@ -43,8 +31,9 @@ const App = (): JSX.Element => {
 
                     <RegionControls/>
 
-                    <Inner/>
-                    <Figure width={1400} height={500}>
+                    <List />
+
+                    {/* <Figure width={1400} height={500}>
                         <Select dataset='cpu'>
                             <Axes position={[0, 0, 1400, 200]}>
                                 <Horizontal>
@@ -63,7 +52,7 @@ const App = (): JSX.Element => {
                                 </Horizontal>
                             </Axes>
                         </Select>
-                    </Figure>
+                    </Figure> */}
                 </Region>
             </LokiConfiguration>
         </PrometheusConfiguration>

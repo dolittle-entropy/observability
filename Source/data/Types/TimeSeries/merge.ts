@@ -14,7 +14,7 @@ export const merge: merge = <T, U extends TimeSeries<T>>(into: U, from: U, callb
 
     let i = 0, j = 0, k = 0;
     while (i < intoLength && j < fromLength) {
-        if (into.times[i] <= from.times[i]) {
+        if (into.times[i] <= from.times[j]) {
             times[k] = into.times[i];
             values[k] = into.values[i];
             i++;
