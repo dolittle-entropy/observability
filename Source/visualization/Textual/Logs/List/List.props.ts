@@ -1,1 +1,3 @@
-export type ListProps = {};
+export type ListProps = {
+    maxLines?: number;
+};

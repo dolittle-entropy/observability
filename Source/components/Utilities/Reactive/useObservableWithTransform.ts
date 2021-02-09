@@ -7,7 +7,7 @@ export const useObservableWithTransform = <T, U>(observable: Observable<T>, tran
     const [value, setValue] = useState<U>(undefined);
 
     useEffect(() => {
-        if (!observable) return;
+        if (!observable || !transform) return;
 
         const transformed = transform(observable);
 

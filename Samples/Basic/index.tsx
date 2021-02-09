@@ -31,9 +31,7 @@ const App = (): JSX.Element => {
 
                     <RegionControls/>
 
-                    <List />
-
-                    {/* <Figure width={1400} height={500}>
+                    <Figure width={1400} height={500}>
                         <Select dataset='cpu'>
                             <Axes position={[0, 0, 1400, 200]}>
                                 <Horizontal>
@@ -52,7 +50,9 @@ const App = (): JSX.Element => {
                                 </Horizontal>
                             </Axes>
                         </Select>
-                    </Figure> */}
+                    </Figure>
+
+                    <List maxLines={20}/>
                 </Region>
             </LokiConfiguration>
         </PrometheusConfiguration>
