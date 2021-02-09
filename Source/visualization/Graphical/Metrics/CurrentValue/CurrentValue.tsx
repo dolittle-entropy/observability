@@ -5,7 +5,7 @@ import { combineLatest } from 'rxjs';
 import { useRegion } from '@dolittle/observability.components/Region';
 import { useSelectedMetrics } from '@dolittle/observability.components/Selection';
 
-import { useAxes } from 'visualization/Graphical/Layout/Axes';
+import { useAxes } from 'visualization/Graphical/Axes';
 import { useColors } from 'visualization/Colors';
 
 import { CurrentValueProps } from './CurrentValue.props';

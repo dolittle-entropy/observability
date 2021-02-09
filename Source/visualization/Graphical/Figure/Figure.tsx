@@ -2,7 +2,7 @@ import React, { createRef, useState } from 'react';
 import { useRefEffect } from '@fluentui/react-hooks';
 import { select } from 'd3';
 
-import { Axes } from 'visualization/Graphical/Layout/Axes';
+import { Axes } from 'visualization/Graphical/Axes';
 import { useMeasuringObserver } from 'visualization/Utilities/Measuring';
 
 import { FigureProps } from './Figure.props';

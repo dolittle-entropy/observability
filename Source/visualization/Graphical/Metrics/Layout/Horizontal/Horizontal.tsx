@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Axes, useAxes } from 'visualization/Graphical/Layout/Axes';
+import { Axes, useAxes } from 'visualization/Graphical/Axes';
 
 import { HorizontalProps } from './Horizontal.props';
 import { ForEach } from '../ForEach';

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { FigureSvg, useFigure } from 'visualization/Graphical/Layout/Figure';
+import { FigureSvg, useFigure } from 'visualization/Graphical/Figure';
 
 import { PositionContext } from './Axes.context';
 

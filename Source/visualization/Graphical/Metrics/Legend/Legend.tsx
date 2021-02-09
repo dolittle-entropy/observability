@@ -4,7 +4,7 @@ import { useSelectedMetrics } from '@dolittle/observability.components/Selection
 import { LabelName } from '@dolittle/observability.data/Types/Labels';
 import { MetricSeries } from '@dolittle/observability.data/Types/MetricSeries';
 
-import { useAxes } from 'visualization/Graphical/Layout/Axes';
+import { useAxes } from 'visualization/Graphical/Axes';
 import { useColors } from 'visualization/Colors';
 
 import { LegendProps } from './Legend.props';

@@ -5,12 +5,11 @@ import './theme/theme';
 import './index.scss';
 
 import { Region, RegionControls, DataSet, Select } from '@dolittle/observability.components';
-import { useMetrics, useLogs } from '@dolittle/observability.components/Selection';
+import { useLogs } from '@dolittle/observability.components/Selection';
 import { LokiConfiguration, LokiQuery, PrometheusConfiguration, PrometheusQuery } from '@dolittle/observability.sources';
-import { Figure, Axes, Horizontal } from '@dolittle/observability.visualization/Graphical/Layout';
-import { Plot } from '@dolittle/observability.visualization/Graphical/Plot';
-import { CurrentValue } from '@dolittle/observability.visualization/Graphical/CurrentValue';
-import { Legend } from '@dolittle/observability.visualization/Graphical/Legend';
+import { Figure, Axes } from '@dolittle/observability.visualization/Graphical';
+import { Horizontal } from '@dolittle/observability.visualization/Graphical/Metrics/Layout';
+import { Plot, CurrentValue, Legend } from '@dolittle/observability.visualization/Graphical/Metrics';
 
 // import { Timeseries, printHello } from '@dolittle/observability.data/Timeseries/Timeseries';
 
