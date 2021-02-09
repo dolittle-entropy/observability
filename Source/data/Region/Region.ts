@@ -1,6 +1,6 @@
 import { AbsoluteDomain, RelativeDomain } from 'data/Types/Domain';
-import { collate as collateLogs, LogSeries } from 'data/Types/LogSeries';
-import { collate as collateMetrics, MetricSeries } from 'data/Types/MetricSeries';
+import { collate as collateLogs, evict as evictLogs, LogSeries } from 'data/Types/LogSeries';
+import { collate as collateMetrics, evict as evictMetrics, MetricSeries } from 'data/Types/MetricSeries';
 
 import { Collection } from './Collection';
 import { Domain } from './Domain';
@@ -11,8 +11,8 @@ export class Region {
         this.domain = new Domain(initialDomain);
         this.selection = new Selection();
 
-        this.metrics = new Collection(this.domain, collateMetrics);
-        this.logs = new Collection(this.domain, collateLogs);
+        this.metrics = new Collection(this.domain, collateMetrics, evictMetrics);
+        this.logs = new Collection(this.domain, collateLogs, evictLogs);
     }
 
     readonly domain: Domain;

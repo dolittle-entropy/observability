@@ -1,5 +1,7 @@
 export { collate } from './collate';
 export { DataSet } from './DataSet';
+export { evict } from './evict';
+export { EvictCallback } from './EvictCallback';
 export { merge } from './merge';
 export { MergeCallback } from './MergeCallback';
 export { Name } from './Name';

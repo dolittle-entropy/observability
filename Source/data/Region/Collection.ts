@@ -8,11 +8,13 @@ import { Collator } from './Collator';
 import { Collector } from './Collector';
 import { Data } from './Data';
 import { Domain } from './Domain';
+import { Evictor } from './Evictor';
 
 export class Collection<T, U extends TimeSeries<T>> {
-    constructor(domain: Domain, collator: Collator<T,U>) {
+    constructor(domain: Domain, collator: Collator<T,U>, evictor: Evictor<T,U>) {
         this._domain = domain;
         this._collator = collator;
+        this._evictor = evictor;
 
         this._collectors = new BehaviorSubject([]);
         this.data = this._data = new BehaviorSubject([]);
@@ -21,6 +23,7 @@ export class Collection<T, U extends TimeSeries<T>> {
 
     private readonly _domain: Domain;
     private readonly _collator: Collator<T,U>;
+    private readonly _evictor: Evictor<T,U>;
     private readonly _collectors: BehaviorSubject<Collector<T,U>[]>;
     private readonly _data: BehaviorSubject<Data<T,U>[]>;
 
@@ -35,7 +38,7 @@ export class Collection<T, U extends TimeSeries<T>> {
     readonly data: Observable<Data<T,U>[]>;
 
     addSource(source: Source<T,U>): void {
-        const collector = new Collector(this._domain, source, this._collator);
+        const collector = new Collector(this._domain, source, this._collator, this._evictor);
         const collectors = this._collectors.value.concat(collector);
         this._collectors.next(collectors);
     }
