@@ -34,7 +34,7 @@ export const Figure = (props: FigureProps): JSX.Element => {
 
     return (
         <div ref={bounding} style={{ width: dimensionToStyle(props.width), height: dimensionToStyle(props.height) }}>
-            <svg ref={figure} style={{ width: '100%', height: '100%', overflow: 'visible', userSelect: 'none' }} viewBox={`0, 0, ${width}, ${height}`}>
+            <svg ref={figure} style={{ width: '100%', height: '100%', userSelect: 'none' }} viewBox={`0, 0, ${width}, ${height}`}>
                 {
                     !!selection && width && height &&
                     <FigureContext.Provider value={selection}>

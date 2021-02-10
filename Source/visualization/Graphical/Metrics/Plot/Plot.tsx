@@ -6,10 +6,24 @@ import moment from 'moment';
 import { useRegion } from '@dolittle/observability.components/Region';
 import { useSelectedMetrics } from '@dolittle/observability.components/Selection';
 
-import { useAxes } from 'visualization/Graphical/Axes';
+import { useAxes, useAxesMouseEvents } from 'visualization/Graphical/Axes';
 import { useColors } from 'visualization/Colors';
 
 import { PlotProps } from './Plot.props';
+
+
+const useHovering = (): void => {
+    const region = useRegion();
+    const { figure, x, y, width, height } = useAxes();
+
+    useEffect(() => {
+        if (!figure) return;
+
+
+
+    }, [figure]);
+}
+
 
 export const Plot = (props: PlotProps): JSX.Element => {
     const { sequence } = useColors();
@@ -17,6 +31,9 @@ export const Plot = (props: PlotProps): JSX.Element => {
 
     const region = useRegion();
     const data = useSelectedMetrics();
+
+    useAxesMouseEvents();
+
 
     useEffect(() => {
         if (!sequence || !figure || width < 1 || height < 1 || !region || !data) return;
@@ -45,31 +62,49 @@ export const Plot = (props: PlotProps): JSX.Element => {
         });
 
 
-        let isMovingInside = false;
-        const move = (event: MouseEvent) => {
-            const [mouseX, mouseY] = pointer(event, svg);
-            if (mouseX < x || mouseX > x+width || mouseY < y || mouseY > y+height) {
-                if (isMovingInside) {
-                    region.selection.setHover(false);
-                    isMovingInside = false;
-                }
-                return;
-            }
+        // let isMovingInside = false;
+        // let isBrushing = false;
 
-            isMovingInside = true;
-            const time = xaxis.invert(mouseX);
-            region.selection.setHover(true, moment(time));
-        };
-        const leave = () => {
-            if (isMovingInside) {
-                region.selection.setHover(false);
-                isMovingInside = false;
-            }
-        };
+        // const down = (event: MouseEvent) => {
+        //     const [mouseX, mouseY] = pointer(event, svg);
+        //     if (mouseX < x || mouseX > x+width || mouseY < y || mouseY > y+height) return;
 
-        const svg = figure.node();
-        svg.addEventListener('mousemove', move);
-        svg.addEventListener('mouseleave', leave);
+        //     isBrushing = true;
+        //     console.log('MouseDown', event);
+        // }
+
+        // const up = (event: MouseEvent) => {
+        //     if (!isBrushing) return;
+
+        //     console.log('MouseUp', event);
+        // }
+
+        // const move = (event: MouseEvent) => {
+        //     const [mouseX, mouseY] = pointer(event, svg);
+        //     if (mouseX < x || mouseX > x+width || mouseY < y || mouseY > y+height) {
+        //         if (isMovingInside) {
+        //             region.selection.setHover(false);
+        //             isMovingInside = false;
+        //         }
+        //         return;
+        //     }
+
+        //     isMovingInside = true;
+        //     const time = xaxis.invert(mouseX);
+        //     region.selection.setHover(true, moment(time));
+        // };
+        // const leave = () => {
+        //     if (isMovingInside) {
+        //         region.selection.setHover(false);
+        //         isMovingInside = false;
+        //     }
+        // };
+
+        // const svg = figure.node();
+        // svg.addEventListener('mousedown', down);
+        // svg.addEventListener('mouseup', up);
+        // svg.addEventListener('mousemove', move);
+        // svg.addEventListener('mouseleave', leave);
 
         const hoverline = figure.append('line')
             .attr('fill', 'none')
@@ -97,8 +132,10 @@ export const Plot = (props: PlotProps): JSX.Element => {
             hsub.unsubscribe();
             path.remove();
             hoverline.remove();
-            svg.removeEventListener('mousemove', move);
-            svg.removeEventListener('mouseleave', leave);
+            // svg.removeEventListener('mousedown', down);
+            // svg.removeEventListener('mouseup', up);
+            // svg.removeEventListener('mousemove', move);
+            // svg.removeEventListener('mouseleave', leave);
         };
     }, [ sequence, figure, x, y, width, height, region, data, props.range ]);
 
