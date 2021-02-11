@@ -7,7 +7,7 @@ import { useSelectedMetrics } from '@dolittle/observability.components/Selection
 
 import { useColors } from 'visualization/Colors';
 import { useAxes } from 'visualization/Graphical/Axes';
-import { useHover } from 'visualization/Graphical/Axes/Selection';
+import { useHover, useSelected } from 'visualization/Graphical/Axes/Selection';
 
 import { PlotProps } from './Plot.props';
 
@@ -19,6 +19,7 @@ export const Plot = (props: PlotProps): JSX.Element => {
     const data = useSelectedMetrics();
 
     const setHoverLine = useHover();
+    const setSelectedBox = useSelected();
 
     const plot = useRef<Selection<SVGGElement,unknown,null,undefined>>();
 
@@ -37,11 +38,17 @@ export const Plot = (props: PlotProps): JSX.Element => {
             .attr('stroke-linejoin', 'round')
         setHoverLine(hover);
 
+        const selected = figure.append('rect')
+            .attr('fill', '#00000')
+        setSelectedBox(selected);
+
         return () => {
             plot.current = null;
             setHoverLine(null);
+            setSelectedBox(null);
             path.remove();
             hover.remove();
+            selected.remove();
         };
     }, [figure]);
 

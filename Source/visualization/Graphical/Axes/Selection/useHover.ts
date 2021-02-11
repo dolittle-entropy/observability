@@ -39,7 +39,7 @@ export const useHover = (): SetHoverLine => {
                 switchMap((domain) => {
                     const xaxis = scaleUtc().domain(domain).range([x, x+width]);
     
-                    return  region.selection.hover.pipe(
+                    return region.selection.hover.pipe(
                         map(({isHovering, time}) => ({ stroke: isHovering ? '#000000' : 'none', x: xaxis(time)}))
                     );
                 }),

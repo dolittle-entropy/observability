@@ -52,7 +52,7 @@ const App = (): JSX.Element => {
                         </Select>
                     </Figure>
 
-                    {/* <List maxLines={30} hoverContextLines={8}/> */}
+                    <List maxLines={30} hoverContextLines={8}/>
                 </Region>
             </LokiConfiguration>
         </PrometheusConfiguration>
