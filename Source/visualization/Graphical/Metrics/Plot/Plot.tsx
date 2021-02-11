@@ -1,29 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { combineLatest } from 'rxjs';
-import { extent, line as d3line, scaleLinear, scaleUtc, curveCatmullRom, pointer } from 'd3';
-import moment from 'moment';
+import { curveCatmullRom, extent, line as d3line, scaleLinear, scaleUtc, Selection } from 'd3';
 
 import { useRegion } from '@dolittle/observability.components/Region';
 import { useSelectedMetrics } from '@dolittle/observability.components/Selection';
 
-import { useAxes, useAxesMouseEvents } from 'visualization/Graphical/Axes';
 import { useColors } from 'visualization/Colors';
+import { useAxes } from 'visualization/Graphical/Axes';
+import { useHover } from 'visualization/Graphical/Axes/Selection';
 
 import { PlotProps } from './Plot.props';
-
-
-const useHovering = (): void => {
-    const region = useRegion();
-    const { figure, x, y, width, height } = useAxes();
-
-    useEffect(() => {
-        if (!figure) return;
-
-
-
-    }, [figure]);
-}
-
 
 export const Plot = (props: PlotProps): JSX.Element => {
     const { sequence } = useColors();
@@ -32,112 +18,53 @@ export const Plot = (props: PlotProps): JSX.Element => {
     const region = useRegion();
     const data = useSelectedMetrics();
 
-    useAxesMouseEvents();
+    const setHoverLine = useHover();
 
+    const plot = useRef<Selection<SVGGElement,unknown,null,undefined>>();
 
     useEffect(() => {
-        if (!sequence || !figure || width < 1 || height < 1 || !region || !data) return;
+        if (!figure) return;
 
-        const path = figure.append('g')
+        const path = plot.current = figure.append('g')
             .attr('fill', 'none')
             .attr('stroke-width', 1.5)
             .attr('stroke-linecap', 'round')
             .attr('stroke-linejoin', 'round');
 
-        let xaxis = scaleUtc();
+        const hover = figure.append('line')
+            .attr('stroke-width', 1.5)
+            .attr('stroke-linecap', 'round')
+            .attr('stroke-linejoin', 'round')
+        setHoverLine(hover);
+
+        return () => {
+            plot.current = null;
+            setHoverLine(null);
+            path.remove();
+            hover.remove();
+        };
+    }, [figure]);
+
+    useEffect(() => {
+        if (!sequence || !figure || width < 1 || height < 1 || !region || !data) return;
 
         const subscription = combineLatest([region.domain.absolute, data]).subscribe(([domain, { series }]) => {
+            if (!plot.current) return;
 
             const range = props.range === 'dynamic' ? extent(series.flatMap(_ => _.range)) : props.range;
             
-            xaxis = scaleUtc().domain(domain).range([x, x+width]);
+            const xaxis = scaleUtc().domain(domain).range([x, x+width]);
             const yaxis = scaleLinear().domain(range).range([y+height, y]);
 
             const line = d3line().x(d => xaxis(d[0])).y(d => yaxis(d[1])).curve(curveCatmullRom);
-            path.selectAll('path')
+            plot.current.selectAll('path')
                 .data(series)
                 .join('path')
                 .attr('stroke', (_, n) => sequence(n))
                 .attr('d', d => line(d.times.map((_,n) => [d.times[n], d.values[n]])));
         });
-
-
-        // let isMovingInside = false;
-        // let isBrushing = false;
-
-        // const down = (event: MouseEvent) => {
-        //     const [mouseX, mouseY] = pointer(event, svg);
-        //     if (mouseX < x || mouseX > x+width || mouseY < y || mouseY > y+height) return;
-
-        //     isBrushing = true;
-        //     console.log('MouseDown', event);
-        // }
-
-        // const up = (event: MouseEvent) => {
-        //     if (!isBrushing) return;
-
-        //     console.log('MouseUp', event);
-        // }
-
-        // const move = (event: MouseEvent) => {
-        //     const [mouseX, mouseY] = pointer(event, svg);
-        //     if (mouseX < x || mouseX > x+width || mouseY < y || mouseY > y+height) {
-        //         if (isMovingInside) {
-        //             region.selection.setHover(false);
-        //             isMovingInside = false;
-        //         }
-        //         return;
-        //     }
-
-        //     isMovingInside = true;
-        //     const time = xaxis.invert(mouseX);
-        //     region.selection.setHover(true, moment(time));
-        // };
-        // const leave = () => {
-        //     if (isMovingInside) {
-        //         region.selection.setHover(false);
-        //         isMovingInside = false;
-        //     }
-        // };
-
-        // const svg = figure.node();
-        // svg.addEventListener('mousedown', down);
-        // svg.addEventListener('mouseup', up);
-        // svg.addEventListener('mousemove', move);
-        // svg.addEventListener('mouseleave', leave);
-
-        const hoverline = figure.append('line')
-            .attr('fill', 'none')
-            .attr('stroke', '#000')
-            .attr('stroke-width', 1.5)
-            .attr('stroke-linecap', 'round')
-            .attr('stroke-linejoin', 'round')
-            .attr('y1', y)
-            .attr('y2', y+height)
-            .attr('x1', x)
-            .attr('x2', x)
-            .style('opacity', 0);
-
-        const hsub = region.selection.hover.subscribe(({isHovering, time}) => {
-            if (isHovering) {
-                const x = xaxis(time);
-                hoverline.attr('x1', x).attr('x2', x).style('opacity', 1);
-            } else {
-                hoverline.style('opacity', 0);
-            }
-        })
-
-        return () => {
-            subscription.unsubscribe();
-            hsub.unsubscribe();
-            path.remove();
-            hoverline.remove();
-            // svg.removeEventListener('mousedown', down);
-            // svg.removeEventListener('mouseup', up);
-            // svg.removeEventListener('mousemove', move);
-            // svg.removeEventListener('mouseleave', leave);
-        };
+        return () => subscription.unsubscribe();
     }, [ sequence, figure, x, y, width, height, region, data, props.range ]);
 
     return null;
-}
+};

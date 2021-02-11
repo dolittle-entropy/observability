@@ -44,7 +44,7 @@ const App = (): JSX.Element => {
                         <Select dataset='network'>
                             <Axes position={[0, 300, 1400, 200]}>
                                 <Horizontal groupBy='node'>
-                                    <Plot range={[0, 2]} />
+                                    <Plot range={[0, 3]} />
                                     <CurrentValue format={v => `${v.toFixed(2)}mb/s`} />
                                     <Legend />
                                 </Horizontal>
