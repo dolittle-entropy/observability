@@ -1,6 +1,6 @@
 import moment, { Duration } from 'moment';
 import { BehaviorSubject, concat, from, Observable, Subscription } from 'rxjs';
-import { exhaustMap, map, scan, switchMap } from 'rxjs/operators';
+import { auditTime, concatMap, map, scan, switchMap } from 'rxjs/operators';
 
 import { hasStreamingCapabilitiles, PollingSource, Response, Source, StreamingSource } from 'data/Sources';
 import { AbsoluteDomain, RelativeDomain } from 'data/Types/Domain';
@@ -44,7 +44,8 @@ const splitResponseToData = <T, U extends TimeSeries<T>>({ loading, series, erro
 
 const getDataFromPollingSource = <T, U extends TimeSeries<T>>(polling: PollingSource<T,U>, absolute: Observable<AbsoluteDomain>): Observable<Data<T,U>[]> =>
     absolute.pipe(
-        exhaustMap(prependSourceWithLoading(pollingSourceWithLoading(polling))),
+        auditTime(10),
+        concatMap(prependSourceWithLoading(pollingSourceWithLoading(polling))),
         scan(keepPreviousResultsUntilLoaded, loadingResponse as ResponseWithLoading<T,U>),
         map(splitResponseToData),
     );
@@ -60,7 +61,8 @@ const getDataFromStreamingSource = <T, U extends TimeSeries<T>>(polling: Polling
                 )
             )
             : absolute.pipe(
-                exhaustMap(prependSourceWithLoading(pollingSourceWithLoading(polling))),
+                auditTime(10),
+                concatMap(prependSourceWithLoading(pollingSourceWithLoading(polling))),
             )
         ),
         scan(keepPreviousResultsUntilLoaded, loadingResponse as ResponseWithLoading<T,U>),
