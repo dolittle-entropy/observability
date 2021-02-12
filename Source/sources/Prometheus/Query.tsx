@@ -8,6 +8,7 @@ import { fetchJSON } from 'sources/Utilities/fetchJSON';
 
 import { QueryProps } from './Query.props';
 import { convertDataToMetricSeries } from './convertDataToMetricSeries';
+import moment from 'moment';
 
 export const Query = (props: QueryProps): JSX.Element => {
     const configuration = useConfiguration(props);
