@@ -23,7 +23,7 @@ export const Query = (props: QueryProps): JSX.Element => {
                     if (typeof configuration.serverUrl !== 'string') throw 'ServerUrl is not configured';
                     if (typeof configuration.limit !== 'number') throw 'Limit is not configured';
 
-                    const url = `${configuration.serverUrl}/query_range?query=${encodeURIComponent(props.query)}&start=${from.unix()}&end=${to.unix()}&limit=${configuration.limit}&direction=forward`;
+                    const url = `${configuration.serverUrl}/query_range?query=${encodeURIComponent(props.query)}&start=${from.unix()}&end=${to.unix()}&limit=${configuration.limit}`;
                     const response = await fetchJSON(url, isResponse);
 
                     if (response.status === 'error') throw response.error;

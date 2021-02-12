@@ -16,8 +16,8 @@ const convertStreamAndDataToLogSeries = (stream: Stream, data: [string, string][
     const values = new Array<string>(data.length);
 
     for (let i = 0; i < data.length; i++) {
-        const time = parseFloat(data[i][0])/1e6, value = data[i][1];
-        times[i] = time;
+        const [time, value] = data[data.length-i-1];
+        times[i] = parseFloat(time)/1e6;
         values[i] = value;
     }
 
