@@ -2,23 +2,24 @@ import React from 'react';
 
 import { MetricSource } from '@dolittle/observability.components/Sources';
 
-import { useConfiguration } from 'sources/Prometheus/Configuration';
+import { useConfiguration } from 'sources/Loki/Configuration';
 import { isResponse } from 'sources/Prometheus/Types';
+import { convertDataToMetricSeries } from 'sources/Prometheus';
 import { fetchJSON } from 'sources/Utilities/fetchJSON';
 
-import { QueryProps } from './Query.props';
-import { convertDataToMetricSeries } from './convertDataToMetricSeries';
+import { MetricQueryProps } from './MetricQuery.props';
 
-export const Query = (props: QueryProps): JSX.Element => {
+export const MetricQuery = (props: MetricQueryProps): JSX.Element => {
     const configuration = useConfiguration(props);
+
 
     return (
         <MetricSource source={async ([from, to]) => {
             try {
                 if (typeof configuration.serverUrl !== 'string') throw 'ServerUrl is not configured';
-                if (typeof configuration.step !== 'number') throw 'Step is not configured';
+                if (typeof configuration.limit !== 'number') throw 'Limit is not configured';
 
-                const url = `${configuration.serverUrl}/query_range?query=${encodeURIComponent(props.query)}&start=${from.unix()}&end=${to.unix()}&step=${configuration.step}`;
+                const url = `${configuration.serverUrl}/query_range?query=${encodeURIComponent(props.query)}&start=${from.unix()}&end=${to.unix()}&limit=${configuration.limit}`;
                 const response = await fetchJSON(url, isResponse);
 
                 if (response.status === 'error') throw response.error;

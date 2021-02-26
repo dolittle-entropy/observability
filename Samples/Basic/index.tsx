@@ -5,7 +5,7 @@ import './theme/theme';
 import './index.scss';
 
 import { Region, RegionControls, DataSet, Select } from '@dolittle/observability.components';
-import { LokiConfiguration, LokiQuery, PrometheusConfiguration, PrometheusQuery } from '@dolittle/observability.sources';
+import { LokiConfiguration, LokiMetricQuery, LokiQuery, PrometheusConfiguration, PrometheusQuery } from '@dolittle/observability.sources';
 import { Figure, Axes } from '@dolittle/observability.visualization/Graphical';
 import { Horizontal } from '@dolittle/observability.visualization/Graphical/Metrics/Layout';
 import { Plot, CurrentValue, Legend } from '@dolittle/observability.visualization/Graphical/Metrics';
@@ -29,9 +29,14 @@ const App = (): JSX.Element => {
                         <LokiQuery name='journal' query='{job="node-journal"}' />
                     </DataSet>
 
+                    <DataSet name='ingress'>
+                        <LokiQuery name='access' query='{job="ingress-access"}' />
+                        <LokiMetricQuery name='time' query='avg by (status) (avg_over_time({job="ingress-access"} | regexp "^[^\\]]*] \"(?P<host>(?:[^\"]|\\\\\")*)\" \"(?:[^\"]|\\\\\")*\" (?P<status>\\d*) \\d* \"(?:[^\"]|\\\\\")*\" \"(?:[^\"]|\\\\\")*\" \\d* (?P<request_time>[\\d.]*) (?:\\d*|-) (?:[\\d.]*|-) (?:\\d*|-)$" | unwrap request_time [1m]))' />
+                    </DataSet>
+
                     <RegionControls/>
 
-                    <Figure width={1400} height={500}>
+                    <Figure width={1400} height={650}>
                         <Select dataset='cpu'>
                             <Axes position={[0, 0, 1400, 200]}>
                                 <Horizontal>
@@ -42,7 +47,7 @@ const App = (): JSX.Element => {
                             </Axes>
                         </Select>
                         <Select dataset='network'>
-                            <Axes position={[0, 300, 1400, 200]}>
+                            <Axes position={[0, 200, 1400, 200]}>
                                 <Horizontal groupBy='node'>
                                     <Plot range={[0, 3]} />
                                     <CurrentValue format={v => `${v.toFixed(2)}mb/s`} />
@@ -50,9 +55,18 @@ const App = (): JSX.Element => {
                                 </Horizontal>
                             </Axes>
                         </Select>
+                        <Select dataset='ingress'>
+                            <Axes position={[0, 400, 1400, 200]}>
+                                <Plot range={[0, 3]} />
+                                <CurrentValue format={v => `${v.toFixed(2)}s`} />
+                                <Legend />
+                            </Axes>
+                        </Select>
                     </Figure>
 
-                    {/* <List maxLines={30} hoverContextLines={8}/> */}
+                    <Select dataset='ingress'>
+                        <List maxLines={30} hoverContextLines={8}/>
+                    </Select>
                 </Region>
             </LokiConfiguration>
         </PrometheusConfiguration>

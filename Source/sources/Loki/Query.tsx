@@ -62,4 +62,4 @@ export const Query = (props: QueryProps): JSX.Element => {
             },
         ]}/>
     );
-}
+};
