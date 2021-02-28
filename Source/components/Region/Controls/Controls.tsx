@@ -11,8 +11,9 @@ export const DateFormat = 'ddd MMM D YYYY HH:mm:ss';
 export const TimeFormat = 'HH:mm:ss';
 
 export const FormatDuration = (duration: Duration): string => {
-    const hours = duration?.hours(), minutes = duration?.minutes(), seconds = duration?.seconds(), milliseconds = duration?.milliseconds();
+    const days = duration?.days(), hours = duration?.hours(), minutes = duration?.minutes(), seconds = duration?.seconds(), milliseconds = duration?.milliseconds();
     let text = '';
+    if (days > 0) text += days + (days > 1 ? ' days' : ' day')
     if (hours > 0) text += hours + (hours > 1 ? ' hours' : ' hour')
     if (minutes > 0) text += minutes + (minutes > 1 ? ' minutes' : ' minute')
     if (seconds > 0) text += seconds + (seconds > 1 ? ' seconds' : ' second')

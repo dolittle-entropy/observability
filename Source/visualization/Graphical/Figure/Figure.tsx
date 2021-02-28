@@ -1,14 +1,14 @@
-import React, { createRef, useState } from 'react';
-import { useRefEffect } from '@fluentui/react-hooks';
-import { select } from 'd3';
+import React, { createRef } from 'react';
+import { useConst, useRefEffect } from '@fluentui/react-hooks';
+import { BufferGeometry, Line, LineBasicMaterial, OrthographicCamera, Scene, Vector2, WebGLRenderer } from 'three';
+
+import { useObservable } from '@dolittle/observability.components/Utilities/Reactive';
 
 import { Axes } from 'visualization/Graphical/Axes';
-import { useMeasuringObserver } from 'visualization/Utilities/Measuring';
+import { useMeasuringObservable } from 'visualization/Utilities/Measuring';
 
 import { FigureProps } from './Figure.props';
 import { FigureContext } from './Figure.context';
-import { FigureSvg } from './FigureSvg';
-
 
 const dimensionToStyle = (dimension?: number | string): string => {
     switch (typeof dimension) {
@@ -22,28 +22,60 @@ const dimensionToStyle = (dimension?: number | string): string => {
 }
 
 export const Figure = (props: FigureProps): JSX.Element => {
-    const [selection, setSelection] = useState<FigureSvg>();
-
-    const bounding = createRef<HTMLDivElement>();
-    const figure = useRefEffect<SVGSVGElement>((figure) => {
-        if (!figure) setSelection(null);
-        setSelection(select(figure));
+    const scene = useConst(() => {
+        const scene = new Scene();
+        return scene;
+    });
+    const camera = useConst(() => {
+        const camera = new OrthographicCamera(0, 1, 1, 0, 1, 1000);
+        camera.position.z = 500;
+        camera.updateProjectionMatrix();
+        return camera;
     });
 
-    const { width, height } = useMeasuringObserver(bounding, figure);
+    const container = createRef<HTMLDivElement>();
+    const size = useMeasuringObservable(container);
+
+    const canvas = useRefEffect<HTMLCanvasElement>((canvas) => {
+        const renderer = new WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        const subscription = size.subscribe(({width, height}) => {
+            camera.right = width;
+            camera.top = height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        });
+
+        let stop = false;
+        const render = () => {
+            if (stop) return;
+            requestAnimationFrame(render);
+            renderer.render(scene, camera);
+        }
+        render();
+
+        return () => {
+            stop = true;
+            subscription.unsubscribe();
+            renderer.dispose();
+        };
+    });
+
+    const {width, height} = useObservable(size) ?? { width: 0, height: 0 };
 
     return (
-        <div ref={bounding} style={{ width: dimensionToStyle(props.width), height: dimensionToStyle(props.height) }}>
-            <svg ref={figure} style={{ width: '100%', height: '100%', userSelect: 'none' }} viewBox={`0, 0, ${width}, ${height}`}>
+        <div ref={container} style={{ width: dimensionToStyle(props.width), height: dimensionToStyle(props.height) }}>
+            <canvas ref={canvas}>
+                <FigureContext.Provider value={{ figure: scene, canvas: canvas.current, width, height }}>
                 {
-                    !!selection && width && height &&
-                    <FigureContext.Provider value={selection}>
+                    width && height &&
                         <Axes position={[0, 0, width, height]}>
                             { props.children }
                         </Axes>
-                    </FigureContext.Provider>
                 }
-            </svg>
+                </FigureContext.Provider>
+            </canvas>
         </div>
     );
 }

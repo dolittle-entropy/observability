@@ -6,27 +6,32 @@ import { filter, map, scan } from 'rxjs/operators';
 import { MouseEvent, useMouseEventObserver } from 'visualization/Utilities/MouseEvents';
 
 import { useAxes } from './useAxes';
-import { pointer } from 'd3';
 import { AxesMouseEvent } from './AxesMouseEvent';
 
 type AxesHitTest = (event: MouseEvent) => AxesMouseEvent & { readonly inside: boolean };
 
-const createHitTest = (x: number, y: number, width: number, height: number, element?: SVGSVGElement): AxesHitTest =>
+const getCanvasMousePosition = (event: globalThis.MouseEvent, element?: HTMLCanvasElement): [number, number] => {
+    if (!element) return [0, 0];
+    const bounding = element.getBoundingClientRect();
+    return [event.clientX - bounding.left, bounding.bottom - event.clientY];
+};
+
+const createHitTest = (x: number, y: number, width: number, height: number, element?: HTMLCanvasElement): AxesHitTest =>
     element === undefined
     ? (event) => ({ ...event, inside: false, x: 0, y: 0 })
     : (event) => {
-        const [mouseX, mouseY] = pointer(event.event, element);
+        const [mouseX, mouseY] = getCanvasMousePosition(event.event, element);
         const inside = mouseX >= x && mouseX <= x+width && mouseY >= y && mouseY <= y+height;
         return ({ ...event, inside, x: mouseX, y: mouseY });
     };
 
 export const useAxesMouseEvents = (): Observable<AxesMouseEvent> => {
-    const { figure, x, y, width, height } = useAxes();
-    const observable = useMouseEventObserver(figure?.node())
+    const { figure, x, y, width, height, canvas } = useAxes();
+    const observable = useMouseEventObserver(canvas)
 
     const hitTest = useRef<AxesHitTest>();
     useEffect(() => {
-        hitTest.current = createHitTest(x, y, width, height, figure?.node());
+        hitTest.current = createHitTest(x, y, width, height, canvas);
     }, [figure, x, y, width, height])
 
     const filtered = useConst(new Subject<AxesMouseEvent>());

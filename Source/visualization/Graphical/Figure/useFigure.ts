@@ -1,7 +1,7 @@
 import { useContext } from 'react';
+import { Scene } from 'three';
 
 import { FigureContext } from './Figure.context';
-import { FigureSvg } from './FigureSvg';
 
-export const useFigure = (): FigureSvg =>
+export const useFigure = (): { figure: Scene, canvas: HTMLCanvasElement, width: number, height: number } =>
     useContext(FigureContext);

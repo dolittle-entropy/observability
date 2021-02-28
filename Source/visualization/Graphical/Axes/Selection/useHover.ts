@@ -7,17 +7,36 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { useRegion } from '@dolittle/observability.components/Region';
 
 import { useAxes, useAxesMouseEvents } from 'visualization/Graphical/Axes';
+import { Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
 
-type Line = Selection<SVGLineElement, unknown, null, undefined>;
+type Line = Mesh<PlaneGeometry, MeshBasicMaterial>;
 
-type SetHoverLine = (line: Line) => void;
-
-export const useHover = (): SetHoverLine => {
+export const useHover = (): void => {
     const { figure, x, y, width, height } = useAxes();
     const region = useRegion();
     const events = useAxesMouseEvents();
 
     const hoverLine = useRef<Line>();
+
+    useEffect(() => {
+        const material = new MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.5 });
+        const geometry = new PlaneGeometry(2, height);
+        const line = new Mesh(geometry, material);
+
+        line.position.y = y+height/2;
+        line.position.z = 100;
+        line.visible = false;
+        
+        figure.add(line);
+        hoverLine.current = line;
+
+        return () => {
+            hoverLine.current = null;
+            figure.remove(line);
+            material.dispose();
+            geometry.dispose();
+        };
+    }, [figure, y, height])
 
     useEffect(() => {
         if (!figure || !region || !events) return;
@@ -40,23 +59,17 @@ export const useHover = (): SetHoverLine => {
                     const xaxis = scaleUtc().domain(domain).range([x, x+width]);
     
                     return region.selection.hover.pipe(
-                        map(({isHovering, time}) => ({ stroke: isHovering ? '#000000' : 'none', x: xaxis(time)}))
+                        map(({isHovering, time}) => ({ visible: isHovering, x: xaxis(time)}))
                     );
                 }),
-                tap(({ stroke, x }) => {
+                tap(({ visible, x }) => {
                     if (!hoverLine.current) return;
-                    hoverLine.current
-                        .attr('x1', x)
-                        .attr('y1', y)
-                        .attr('x2', x)
-                        .attr('y2', y+height)
-                        .attr('stroke', stroke);
+                    hoverLine.current.visible = visible;
+                    hoverLine.current.position.x = x;
                 }),
             ),
         ).subscribe();
 
         return () => subscription.unsubscribe();
-    }, [figure, region, events, x, y, width, height]);
-
-    return (line) => hoverLine.current = line;
+    }, [region, events, x, width]);
 };

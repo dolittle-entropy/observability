@@ -7,12 +7,11 @@ import { exhaustMap, map, switchMap, takeWhile, tap } from 'rxjs/operators';
 import { scaleUtc, Selection } from 'd3';
 import { combineLatest, EMPTY, merge, of } from 'rxjs';
 import moment from 'moment';
+import { Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
 
-type Box = Selection<SVGRectElement, unknown, null, undefined>;
+type Box = Mesh<PlaneGeometry, MeshBasicMaterial>;
 
-type SetSelectedBox = (box: Box) => void;
-
-export const useSelected = (): SetSelectedBox => {
+export const useSelected = (): void => {
     const { figure, x, y, width, height } = useAxes();
     const region = useRegion();
     const events = useAxesMouseEvents();
@@ -20,7 +19,27 @@ export const useSelected = (): SetSelectedBox => {
     const selectedBox = useRef<Box>();
 
     useEffect(() => {
-        if (!figure || !region || !events) return;
+        const material = new MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.2 });
+        const geometry = new PlaneGeometry(1, height);
+        const box = new Mesh(geometry, material);
+
+        box.position.y = y+height/2;
+        box.position.z = 50;
+        box.visible = false;
+
+        figure.add(box);
+        selectedBox.current = box;
+
+        return () => {
+            selectedBox.current = null;
+            figure.remove(box);
+            material.dispose();
+            geometry.dispose();
+        };
+    }, [figure, y, height]);
+
+    useEffect(() => {
+        if (!region || !events) return;
 
         const timedEvents = region.domain.absolute.pipe(
             switchMap((domain) => {
@@ -84,19 +103,14 @@ export const useSelected = (): SetSelectedBox => {
                             }
                         }),
                         map(({hasSelected, from, to}) => {
-                            const x = xaxis(from);
-                            const width = xaxis(to) - x;
-                            return { opacity: hasSelected ? 0.5 : 0, cursor: hasSelected ? 'pointer' : 'auto', x, width };
+                            const start = xaxis(from), end = xaxis(to);
+                            return { visible: hasSelected, x: (start+end)/2, width: end-start };
                         }),
-                        tap(({opacity, cursor, x, width}) => {
+                        tap(({visible, x, width}) => {
                             if (!selectedBox.current) return;
-                            selectedBox.current
-                                .attr('x', x)
-                                .attr('y', y)
-                                .attr('width', width)
-                                .attr('height', height)
-                                .attr('fill-opacity', opacity)
-                                .attr('cursor', cursor);
+                            selectedBox.current.visible = visible;
+                            selectedBox.current.position.x = x;
+                            selectedBox.current.scale.x = width;
                         }),
                     );
                 }),
@@ -104,7 +118,5 @@ export const useSelected = (): SetSelectedBox => {
         ).subscribe();
 
         return () => subscription.unsubscribe();
-    }, [figure, region, events, x, y, width, height]);
-
-    return (box) => selectedBox.current = box;
+    }, [region, events, x, width]);
 };

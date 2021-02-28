@@ -1,5 +1,4 @@
 import { createContext } from 'react';
+import { Scene } from 'three';
 
-import { FigureSvg } from './FigureSvg';
-
-export const FigureContext = createContext<FigureSvg>(null);
+export const FigureContext = createContext<{ figure: Scene, canvas: HTMLCanvasElement, width: number, height: number }>(null);

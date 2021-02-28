@@ -7,17 +7,17 @@ import { FormatDuration } from './Controls';
 import { RelativeControlsProps } from './RelativeControls.props';
 
 const RangeOptions = [
-    duration(5, 'minutes'),
-    duration(15, 'minutes'),
     duration(30, 'minutes'),
     duration(1, 'hour'),
-    duration(3, 'hours'),
+    duration(6, 'hours'),
+    duration(1, 'day'),
+    duration(7, 'days'),
 ];
 
 const RefreshOptions = [
-    duration(5, 'seconds'),
-    duration(10, 'seconds'),
     duration(1, 'minute'),
+    duration(5, 'minutes'),
+    duration(10, 'minutes'),
 ];
 
 const findOrInsertDuration = (options: Duration[], selected: Duration): [number, Duration[]] => {

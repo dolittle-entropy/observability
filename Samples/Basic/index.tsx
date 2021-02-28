@@ -36,37 +36,37 @@ const App = (): JSX.Element => {
 
                     <RegionControls/>
 
-                    <Figure width={1400} height={650}>
+                    <Figure width={1400} height={600}>
                         <Select dataset='cpu'>
-                            <Axes position={[0, 0, 1400, 200]}>
+                            <Axes position={[0, 400, 1400, 200]}>
                                 <Horizontal>
                                     <Plot range={[0, 100]} />
-                                    <CurrentValue format={v => `${Math.round(v)}%`} />
-                                    <Legend />
+                                    {/* <CurrentValue format={v => `${Math.round(v)}%`} />
+                                    <Legend /> */}
                                 </Horizontal>
                             </Axes>
                         </Select>
                         <Select dataset='network'>
                             <Axes position={[0, 200, 1400, 200]}>
                                 <Horizontal groupBy='node'>
-                                    <Plot range={[0, 3]} />
-                                    <CurrentValue format={v => `${v.toFixed(2)}mb/s`} />
-                                    <Legend />
+                                    <Plot range={[0, 100]} />
+                                    {/* <CurrentValue format={v => `${v.toFixed(2)}mb/s`} />
+                                    <Legend /> */}
                                 </Horizontal>
                             </Axes>
                         </Select>
                         <Select dataset='ingress'>
-                            <Axes position={[0, 400, 1400, 200]}>
-                                <Plot range={[0, 3]} />
-                                <CurrentValue format={v => `${v.toFixed(2)}s`} />
-                                <Legend />
+                            <Axes position={[0, 0, 1400, 200]}>
+                                <Plot range='dynamic' />
+                                {/* <CurrentValue format={v => `${v.toFixed(2)}s`} />
+                                <Legend /> */}
                             </Axes>
                         </Select>
                     </Figure>
 
-                    <Select dataset='ingress'>
+                    {/* <Select dataset='ingress'>
                         <List maxLines={30} hoverContextLines={8}/>
-                    </Select>
+                    </Select> */}
                 </Region>
             </LokiConfiguration>
         </PrometheusConfiguration>

@@ -4,7 +4,7 @@ import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
 import { AbsoluteDomain, isAbsoluteDomain, isRelativeDomain, RelativeDomain } from 'data/Types/Domain';
 
-const defaultRelativeDomain: RelativeDomain = { last: duration(1, 'hours'), refresh: duration(5, 'seconds') };
+const defaultRelativeDomain: RelativeDomain = { last: duration(1, 'day'), refresh: duration(1, 'minute') };
 
 const createInitialDomain = (initial?: AbsoluteDomain | RelativeDomain): [AbsoluteDomain, RelativeDomain, boolean] => {
     if (isAbsoluteDomain(initial)) {
