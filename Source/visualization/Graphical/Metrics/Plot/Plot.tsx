@@ -1,23 +1,20 @@
-import { useEffect, useRef } from 'react';
-import { combineLatest, EMPTY, from, timer } from 'rxjs';
-import { curveCatmullRom, extent, line as d3line, scaleLinear, scaleUtc, Selection } from 'd3';
+import { useEffect } from 'react';
+import { combineLatest } from 'rxjs';
+import { extent } from 'd3';
 
 import { useRegion } from '@dolittle/observability.components/Region';
-import { SelectedMetrics, useSelectedMetrics } from '@dolittle/observability.components/Selection';
-import { useRandomID } from '@dolittle/observability.components/Utilities/Identity';
+import { useSelectedMetrics } from '@dolittle/observability.components/Selection';
 
 import { useColors } from 'visualization/Colors';
 import { useAxes } from 'visualization/Graphical/Axes';
 import { useHover, useSelected } from 'visualization/Graphical/Axes/Selection';
 
 import { PlotProps } from './Plot.props';
-import { concatMap, map, sample, scan } from 'rxjs/operators';
 import { AbsoluteDomain } from 'visualization/../data/Types/Domain';
-import { BufferGeometry, Color, InstancedInterleavedBuffer, InterleavedBufferAttribute, Scene, } from 'three';
+import { Color, InstancedInterleavedBuffer, InterleavedBufferAttribute, Scene, } from 'three';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial';
 import { Line2 } from 'three/examples/jsm/lines/Line2';
-import { useConst } from '@fluentui/react-hooks';
 import { MetricSeries } from 'visualization/../data/Types/MetricSeries';
 
 const MAX_POINTS = 4000;
@@ -46,6 +43,8 @@ const createLine = (figure: Scene, color: string, width: number, opacity: number
         lastNumberOfPairs = pairs;
 
         geometry.attributes.instanceStart.needsUpdate = true;
+        geometry.computeBoundingBox();
+        geometry.computeBoundingSphere();
     };
 
     const dispose = () => {
@@ -74,18 +73,30 @@ const getYOffsetScale = (range: [number, number] | 'dynamic', height: number, se
     return [offset, scale];
 };
 
-const getPairOffsetAndCountInDomain = (domain: AbsoluteDomain, times: readonly number[]): [number, number] => {
-    const startValue = domain[0].valueOf(), endValue = domain[1].valueOf();
+const shouldDrawPoint = (startTime: number, endTime: number, time: number, value: number): boolean => {
+    if (startTime > time || time > endTime) return false;
+    if (!Number.isFinite(value)) return false;
+    return true;
+}
 
-    let startIndex = 0;
-    while (startIndex < times.length && times[startIndex] < startValue) startIndex++;
-    if (startIndex == times.length) return [0, 0];
+const getIndexBlocksToDraw = (domain: AbsoluteDomain, times: readonly number[], values: readonly number[]): [number, number][] => {
+    const startTime = domain[0].valueOf(), endTime = domain[1].valueOf();
 
-    let endIndex = startIndex;
-    while (endIndex < times.length && times[endIndex] <= endValue) endIndex++;
-    if (endIndex == times.length) endIndex--;
+    const blocks: [number, number][] = [];
+    let index = 0;
+    while (index < times.length && times[index] <= endTime) {
+        while (index < times.length && !shouldDrawPoint(startTime, endTime, times[index], values[index])) index++;
+        if (index == times.length) break;
+        const blockStartIndex = index;
 
-    return [startIndex, endIndex-startIndex];
+        while (index < times.length && shouldDrawPoint(startTime, endTime, times[index], values[index])) index++;
+        let blockEndIndex = index-1;
+        if (!shouldDrawPoint(startTime, endTime, times[blockEndIndex], values[blockEndIndex])) blockEndIndex = blockStartIndex;
+
+        blocks.push([blockStartIndex, blockEndIndex]);
+    }
+
+    return blocks;
 }
 
 export const Plot = (props: PlotProps): JSX.Element => {
@@ -115,15 +126,27 @@ export const Plot = (props: PlotProps): JSX.Element => {
                 const line = lines[n];
                 const data = series[n];
 
-                const [offset, pairs] = getPairOffsetAndCountInDomain(domain, data.times);
-                for (let m = offset; m < pairs; m++) {
-                    line.points[6*m] = (data.times[m] - xOffset) * xScale + x;
-                    line.points[6*m+1] = (data.values[m] - yOffset) * yScale + y;
-                    line.points[6*m+3] = (data.times[m+1] - xOffset) * xScale + x;
-                    line.points[6*m+4] = (data.values[m+1] - yOffset) * yScale + y;
+                const blocks = getIndexBlocksToDraw(domain, data.times, data.values);
+                let m = 0;
+                for (const [blockStart, blockEnd] of blocks) {
+                    if (blockStart == blockEnd) {
+                        line.points[6*m] = (data.times[blockStart] - xOffset) * xScale + x;
+                        line.points[6*m+1] = (data.values[blockStart] - yOffset) * yScale + y;
+                        line.points[6*m+3] = (data.times[blockStart] - xOffset) * xScale + x;
+                        line.points[6*m+4] = (data.values[blockStart] - yOffset) * yScale + y;
+                        m++;
+                    } else {
+                        for (let n = blockStart; n < blockEnd; n++) {
+                            line.points[6*m] = (data.times[n] - xOffset) * xScale + x;
+                            line.points[6*m+1] = (data.values[n] - yOffset) * yScale + y;
+                            line.points[6*m+3] = (data.times[n+1] - xOffset) * xScale + x;
+                            line.points[6*m+4] = (data.values[n+1] - yOffset) * yScale + y;
+                            m++;
+                        }
+                    }
                 }
 
-                line.needsUpdate(pairs);
+                line.needsUpdate(m);
             }
 
             for (const removedLine of lines.splice(series.length)) {
