@@ -38,7 +38,7 @@ export const Figure = (props: FigureProps): JSX.Element => {
 
     const canvas = useRefEffect<HTMLCanvasElement>((canvas) => {
         const renderer = new WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(window.devicePixelRatio * 2);
 
         const subscription = size.subscribe(({width, height}) => {
             camera.right = width;
