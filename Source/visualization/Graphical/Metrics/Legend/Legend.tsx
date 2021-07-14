@@ -178,6 +178,10 @@ export const Legend = (props: LegendProps): JSX.Element => {
                         .setY(legendTop - padding - emSize.y/2 - n*lineHeight)
                         .setX(legendLeft + padding + LINE_LENGTH/2);
                 }
+
+                for (const removedLine of lines.splice(series.length)) {
+                    removedLine.dispose();
+                }
             }
         });
 
@@ -188,6 +192,10 @@ export const Legend = (props: LegendProps): JSX.Element => {
             backdropMaterial.dispose();
             textGeometry.dispose();
             textMaterial.dispose();
+
+            for (const line of lines) {
+                line.dispose();
+            }
         };
     }, [ font, sequence, figure, x, y, width, height, data, props.labels, props.font, props.fontSize ]);
     
