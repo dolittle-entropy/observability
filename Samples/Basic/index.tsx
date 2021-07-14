@@ -15,34 +15,48 @@ import { List } from '@dolittle/observability.visualization/Textual/Logs';
 
 const App = (): JSX.Element => {
     return (
-        <PrometheusConfiguration serverUrl='http://localhost:8080/api/prom/api/v1' step={60}>
-            <LokiConfiguration serverUrl='http://localhost:8080/loki/api/v1' websocketServerUrl='ws://localhost:8080/loki/api/v1' limit={2000}>
-                <Region>
-                    <DataSet name='ingress'>
-                        <LokiQuery name='access' query='{job="ingress-access"}' />
-                        <PrometheusQuery name='Request Duration' query='histogram_quantile(0.5, rate(microservice:dolittle_ingress_request_duration_seconds_bucket:sum[5m]))' />
-                    </DataSet>
+        <Font name='default' url='https://threejs.org/examples/fonts/helvetiker_regular.typeface.json' fallback={true}>
+            <PrometheusConfiguration serverUrl='http://localhost:8080/api/prom/api/v1' step={60}>
+                <LokiConfiguration serverUrl='http://localhost:8080/loki/api/v1' websocketServerUrl='ws://localhost:8080/loki/api/v1' limit={2000}>
+                    <Region>
+                        <DataSet name='duration'>
+                            <PrometheusQuery name='Request Duration' query='histogram_quantile(0.5, rate(microservice:dolittle_ingress_request_duration_seconds_bucket:sum[5m]))' />
+                        </DataSet>
+                        <DataSet name='size'>
+                            <PrometheusQuery name='Response size' query='histogram_quantile(0.5, rate(microservice:dolittle_ingress_response_size_bytes_bucket:sum[5m]))' />
+                        </DataSet>
+                        <DataSet name='access'>
+                            <LokiQuery name='access' query='{job="ingress-access"}' />
+                        </DataSet>
 
-                    <RegionControls/>
+                        <RegionControls/>
 
-                    <Font name='default' url='https://threejs.org/examples/fonts/helvetiker_regular.typeface.json' fallback={true}>
-                        <Figure width={1400} height={400}>
-                            <Select dataset='ingress'>
-                                <Axes position={[0, 0, 1400, 400]}>
-                                    <Plot range='dynamic' />
-                                    {/* <CurrentValue format={v => `${v.toFixed(2)}s`} /> */}
-                                    <Legend fontSize={12} labels={['microservice']} />
-                                </Axes>
-                            </Select>
-                        </Figure>
-                    </Font>
+                            <Figure width={1400} height={800}>
+                                <Select dataset='duration'>
+                                    <Axes position={[0, 400, 1400, 400]}>
+                                        <Plot range='dynamic' />
+                                        <CurrentValue fontSize={36} format={v => `${(v*1000).toFixed(2)}ms`} />
+                                        <Legend fontSize={12} labels={['microservice','environment']} />
+                                    </Axes>
+                                </Select>
+                                <Select dataset='size'>
+                                    <Axes position={[0, 0, 1400, 400]}>
+                                        <Horizontal groupBy='microservice'>
+                                            <Plot range='dynamic' />
+                                            <CurrentValue fontSize={36} format={v => `${(v/1024).toFixed(0)}kb`} />
+                                            <Legend fontSize={12} labels={['microservice','environment']} />
+                                        </Horizontal>
+                                    </Axes>
+                                </Select>
+                            </Figure>
 
-                    {/* <Select dataset='ingress'>
-                        <List maxLines={30} hoverContextLines={8}/>
-                    </Select> */}
-                </Region>
-            </LokiConfiguration>
-        </PrometheusConfiguration>
+                        <Select dataset='access'>
+                            <List maxLines={30} hoverContextLines={8}/>
+                        </Select>
+                    </Region>
+                </LokiConfiguration>
+            </PrometheusConfiguration>
+        </Font>
     );
 };
 
