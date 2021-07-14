@@ -31,24 +31,24 @@ const App = (): JSX.Element => {
 
                         <RegionControls/>
 
-                            <Figure width={1400} height={800}>
-                                <Select dataset='duration'>
-                                    <Axes position={[0, 400, 1400, 400]}>
+                        <Figure width={1400} height={800}>
+                            <Select dataset='duration'>
+                                <Axes position={[0, 400, 1400, 400]}>
+                                    <Plot range='dynamic' />
+                                    {/* <CurrentValue fontSize={36} format={v => `${(v*1000).toFixed(2)}ms`} /> */}
+                                    <Legend fontSize={12} labels={['microservice','environment']} />
+                                </Axes>
+                            </Select>
+                            <Select dataset='size'>
+                                <Axes position={[0, 0, 1400, 400]}>
+                                    <Horizontal groupBy='microservice'>
                                         <Plot range='dynamic' />
-                                        <CurrentValue fontSize={36} format={v => `${(v*1000).toFixed(2)}ms`} />
+                                        <CurrentValue fontSize={36} format={v => `${(v/1024).toFixed(0)}kb`} />
                                         <Legend fontSize={12} labels={['microservice','environment']} />
-                                    </Axes>
-                                </Select>
-                                <Select dataset='size'>
-                                    <Axes position={[0, 0, 1400, 400]}>
-                                        <Horizontal groupBy='microservice'>
-                                            <Plot range='dynamic' />
-                                            <CurrentValue fontSize={36} format={v => `${(v/1024).toFixed(0)}kb`} />
-                                            <Legend fontSize={12} labels={['microservice','environment']} />
-                                        </Horizontal>
-                                    </Axes>
-                                </Select>
-                            </Figure>
+                                    </Horizontal>
+                                </Axes>
+                            </Select>
+                        </Figure>
 
                         <Select dataset='access'>
                             <List maxLines={30} hoverContextLines={8}/>
