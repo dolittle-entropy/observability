@@ -156,6 +156,9 @@ export const Plot = (props: PlotProps): JSX.Element => {
 
         return () => {
             subscription.unsubscribe();
+            for (const line of lines) {
+                line.dispose();
+            }
         };
     }, [figure, region, data, x, y, width, height, figureWidth, props.range]);
 
